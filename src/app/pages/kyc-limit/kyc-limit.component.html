@@ -1,0 +1,142 @@
+<div class=" content">
+    <div class=" row">
+        <div class=" col-md-12">
+
+            <div class=" card">
+                <div class=" card-header" style="display: flex;">
+                    <i class=" tim-icons icon-single-02 mr-2" style="font-size: x-large"> </i>
+                    <h2 *ngIf="buttonName == 'LIST'">Kyc Limit</h2>
+                    <h2 *ngIf="buttonName == 'SAVE'">Create Limit</h2>
+                    <h2 *ngIf="buttonName == 'VIEW'">Kyc Detail</h2>
+                    <h2 *ngIf="buttonName == 'UPDATE'">Update Kyc Limit</h2>
+                    <div style="padding-left: 50%;">
+                        <button class="btn btn-success editBack" *ngIf="buttonName == 'VIEW'" (click)="onEditAction()"
+                            [disabled]="permissionObj?.isUpdate == false" title="Edit"> EDIT</button>&nbsp;&nbsp;
+                        <button class="btn btn-success bckb"
+                            *ngIf="buttonName == 'VIEW' || buttonName == 'SAVE' || buttonName == 'UPDATE'"
+                            (click)="back()">
+                            BACK
+                        </button>
+
+                        <button class="btn btn-success ctb" *ngIf="buttonName == 'LIST'"
+                            [disabled]="permissionObj?.isCreate == false" title="Add" (click)="onCreateAction()">CREATE
+                            LIMIT +</button>
+                    </div>
+
+                </div>
+
+                <hr>
+                <div class=" card-body" *ngIf="buttonName == 'LIST'">
+                    <div class=" table-responsive" style="text-align: center;">
+                        <table class=" table tablesorter" id="">
+                            <thead class=" text-primary">
+                                <tr>
+                                    <th>Limit</th>
+                                    <th>Limit Type</th>
+                                    <th>Risk Type</th>
+                                    <th>Risk Score</th>
+                                    <th>Created At</th>
+                                    <th class=" text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr
+                                    *ngFor="let item of roleList | paginate: { itemsPerPage: itemPerPage,totalItems:totalItems, currentPage: currentPage};let i = index">
+                                    <td>{{item?.limit}}</td>
+                                    <td>{{item?.limitType}}</td>
+                                    <td>{{item?.riskType}}</td>
+                                    <td>{{item?.riskScore}}</td>
+                                    <td>{{item?.creationTime | date:'mediumDate'}}</td>
+                                    <td class=" text-center">
+                                        <button class="btn btn btn-success btn-sm btn-icon"
+                                            [disabled]="permissionObj?.isRead == false"><i class="fa fa-eye"
+                                                (click)="viewDetailsObj(item)" title="View"></i></button>&nbsp;&nbsp;
+                                    </td>
+                                </tr>
+                                <tr *ngIf="!roleList.length">
+                                    <td class="table-no-record" colspan="9">No Record Found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="custom-pagination mt-2" style="text-align: right;">
+                        <pagination-controls (pageChange)="pagination($event)"></pagination-controls>
+                    </div>
+                </div>
+
+
+                <div class=" card-body" *ngIf="buttonName != 'LIST'">
+                    <form [formGroup]="adminForm">
+                        <div class=" row">
+                            <div class=" col-md-6 pr-md-1">
+                                <div class=" form-group">
+                                    <label>Limit <span class="redRole">*</span></label>
+                                    <input class=" form-control" placeholder="Enter limit" type="text"
+                                        formControlName="limit" />
+                                </div>
+                                <div *ngIf="adminForm.get('limit').invalid && (adminForm.get('limit').touched || adminForm.get('limit').dirty)"
+                                    class="error">
+                                    <p *ngIf="adminForm.get('limit').errors.required" class="error">
+                                        *Please Enter limit.</p>
+                                    <p *ngIf="adminForm.get('limit').errors.pattern" class="error">*Please Enter Valid
+                                        limit.</p>
+                                </div>
+                            </div>
+                            <div class=" col-md-6 pl-md-1">
+                                <div class=" form-group">
+                                    <label>Limit Type <span class="redRole">*</span></label>
+                                    <input class=" form-control" placeholder="Enter limit type" type="text"
+                                        formControlName="limitType" maxlength="60" />
+                                </div>
+                                <div *ngIf="adminForm.get('limitType').invalid && (adminForm.get('limitType').touched || adminForm.get('limitType').dirty)"
+                                    class="error">
+                                    <p *ngIf="adminForm.get('limitType').errors.required" class="error">
+                                        *Please Enter Limit Type.</p>
+                                    <p *ngIf="adminForm.get('limitType').errors.pattern" class="error">*Please Enter
+                                        Valid
+                                        Limit Type.</p>
+                                </div>
+                            </div>
+                            <div class=" col-md-6 pr-md-1">
+                                <div class=" form-group">
+                                    <label>Risk Type <span class="redRole">*</span></label>
+                                    <input class=" form-control" placeholder="Enter risk type" type="text"
+                                        formControlName="riskType" maxlength="60" />
+                                </div>
+                                <div *ngIf="adminForm.get('riskType').invalid && (adminForm.get('riskType').touched || adminForm.get('riskType').dirty)"
+                                    class="error">
+                                    <p *ngIf="adminForm.get('riskType').errors.required" class="error">
+                                        *Please Enter Risk Type.</p>
+                                    <p *ngIf="adminForm.get('riskType').errors.pattern" class="error">*Please Enter
+                                        Valid
+                                        Risk Type.</p>
+                                </div>
+
+                            </div>
+                            <div class=" col-md-6 pl-md-1">
+                                <div class=" form-group">
+                                    <label>Risk Score <span class="redRole">*</span></label>
+                                    <input class=" form-control" placeholder="Enter risk type" type="text"
+                                        formControlName="riskScore" maxlength="60" />
+                                </div>
+                                <div *ngIf="adminForm.get('riskScore').invalid && (adminForm.get('riskScore').touched || adminForm.get('riskScore').dirty)"
+                                    class="error">
+                                    <p *ngIf="adminForm.get('riskScore').errors.required" class="error">
+                                        *Please Enter Risk Score.</p>
+                                    <p *ngIf="adminForm.get('riskScore').errors.pattern" class="error">*Please Enter
+                                        Valid
+                                        Risk Score.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="mt-5 card-footer">
+                        <button class="btn btn-success" [disabled]="!adminForm.valid" *ngIf="buttonName != 'VIEW'"
+                            [title]="buttonName"
+                            (click)="buttonName == 'UPDATE'? updateRole() : saveRole()">{{buttonName}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,180 @@
+<div class="wrapper">
+    <div class="main-panel">
+      <div class=" content">
+        <div class=" row">
+          <div class=" col-md-12">
+            <div class=" card">
+              <div class=" card-header" style="display: flex;">
+                <i class=" tim-icons icon-single-02 mr-2" style="font-size: x-large"> </i>
+                <h2 class="rism">KYC DASHBOARD</h2>
+              </div>
+              <hr>
+              <div class=" card-body">
+                <!-- <div style="margin-bottom: 1%;">
+                  <button class=" btn btn-fab" [ngClass]="tabName == 'KYC-STATUS' ? 'active':'tabColor'"
+                    style="margin-right: 4px;" type="submit">KYC STATUS</button>
+                </div> -->
+                <div class="row ml10" *ngIf="tabName != 'View'">
+  
+  
+                  <div class=" col-md-3">
+                    <div>
+                      <label>
+                        <h4 class=" text-muted" style="margin-bottom: auto;">From</h4>
+                      </label>
+                    </div>
+                    <div class=" form-group">
+                      <input class=" form-control" type="date" [(ngModel)]="fromDate" (change)="onFromSelect()"
+                        [max]="maxFromDate" />
+                    </div>
+                  </div>
+                  <div class=" col-md-3">
+                    <div>
+                      <label>
+                        <h4 class=" text-muted" style="margin-bottom: auto;">To</h4>
+                      </label>
+                    </div>
+                    <div class=" form-group">
+                      <input class=" form-control" type="date" [(ngModel)]="toDate" (change)="onToSelect()"
+                        [min]="maxToDate" />
+                    </div>
+                  </div>
+                  <div class="col-md-2 pt-4">
+  
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        {{(status | slice:0:10) || 'All Status'}}
+                      </button>
+                      <div class="dropdown-menu">
+                        <a class="dropdown-item" href="javascript:void(0)"
+                          (click)="status = 'ACCEPTED'">ACCEPTED</a>
+                          <a class="dropdown-item" href="javascript:void(0)"
+                          (click)="status = 'REJECTED'">REJECTED</a>
+                          <a class="dropdown-item" href="javascript:void(0)"
+                          (click)="status = 'PENDING'">PENDING</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class=" col-md-3 pt-4">
+                    <button type="button" rel="tooltip" title="Filter" class=" btn btn-info btn-sm btn-icon"
+                      (click)="currentPage=1;getUserList();">
+                      <i class="tim-icons icon-zoom-split"></i>
+                    </button>&nbsp;&nbsp;
+                    <button type="button" rel="tooltip" title="Reset" class=" btn btn-warning btn-sm btn-icon"
+                      (click)="clearSearch()">
+                      <i class="tim-icons icon-refresh-02"></i>
+                    </button>
+                  </div>
+                </div>
+  
+                <div class=" card-body" *ngIf="tabName != 'View'">
+                  <div class=" table-responsive" style="text-align: center;">
+                    <table class=" table tablesorter" id="myTable">
+                      <thead class=" text-primary">
+                        <tr>
+                          <th>Risk Profile</th>
+                          <th>Email</th>
+                          <th>Mobile Number </th>
+                          <th>User Id</th>
+                          <th>Status</th>
+                          <th>Country of Residence</th>
+                          <th>Nationality</th>
+                          <th>KYC Partner</th>
+                          <!-- <th class=" text-center">Actions</th> -->
+                        </tr>
+                      </thead>
+                      <tbody [ngClass]="{'unselectable':permissionObj?.isRead == false}">
+                        <tr class="pointer rowColor-change"
+                          *ngFor="let item of userList | paginate: {id:'list',itemsPerPage: itemPerPage,totalItems:totalItems, currentPage: currentPage};let i=index">
+                          <td><label>
+                              <span>
+                                <i class="fas fa-times-circle pointer" style="font-size: x-large"
+                                  [title]="item?.kyc?.kycStatus" *ngIf="item?.kyc?.kycStatus == 'REJECTED'"
+                                  [ngClass]="{'red':item?.kyc?.kycStatus == 'REJECTED'}"></i>
+                                <i class="far fa-check-circle pointer" style="font-size: x-large"
+                                  *ngIf="item?.kyc?.kycStatus == 'ACCEPTED'" [title]="item?.kyc?.kycStatus"
+                                  [ngClass]="{'green':item?.kyc?.kycStatus == 'ACCEPTED'}"></i>
+  
+                                <i class="fa fa-circle pointer" aria-hidden="true" [title]="item?.kyc?.kycStatus"
+                                  style="font-size: x-large"
+                                  *ngIf="item?.kyc?.kycStatus == 'INPROGRESS' || item?.kyc?.kycStatus == null"
+                                  [ngClass]="{'darkOrange': item?.kyc?.kycStatus == 'INPROGRESS','orange':item?.kyc?.kycStatus == null}"></i>
+  
+                                <i class="fa fa-circle pointer" aria-hidden="true" [title]="item?.kyc?.kycStatus"
+                                  style="font-size: x-large" *ngIf="item?.kyc?.kycStatus == 'PENDING'"
+                                  [ngClass]="{'darkOrange':item?.kyc?.kycStatus == 'PENDING'}"></i>
+                              </span>
+  
+                            </label>
+  
+                            <p class="text-center fw"
+                              [ngClass]="{'green':item?.kyc?.kycStatus == 'ACCEPTED' , 'darkOrange': item?.kyc?.kycStatus == 'PENDING','darkOrange': item?.kyc?.kycStatus == 'INPROGRESS' ,'orange': item?.kyc?.kycStatus == null}">
+                              <b
+                                *ngIf="item?.kyc?.kycStatus == 'ACCEPTED' || item?.kyc?.kycStatus == 'PENDING' || item?.kyc?.kycStatus == 'INPROGRESS' || item?.kyc?.kycStatus == null">{{item?.riskStatus}}</b>
+                            </p>
+  
+                          </td>
+                          <td title="View ">{{item?.email || '---'}}</td>
+                          <td title="View ">{{item?.profile?.phoneNo || '---'
+                            }}
+                          </td>
+  
+                          <td title="View ">{{item?.id || '---' }}</td>
+                          <td title="View ">
+                            <p [ngClass]="{'red': item?.userStatus == 'BLOCK', 'green': item?.userStatus == 'ACTIVE'}">
+                              <b>{{item?.userStatus || '' }}</b>
+                            </p>
+                          </td>
+                          <td title="View ">
+                            {{item?.profile?.countryOfResidence ||
+                            '---' }}</td>
+                          <td title="View ">{{item?.profile?.nationality ||
+                            '---' }}
+                          </td>
+                          <td title="View ">{{item?.kyc?.kycPartner || '---'
+                            }}
+                          </td>
+                          <!-- <td class=" text-center">
+                            <button class="btn btn-success btn-sm btn-icon" [disabled]="permissionObj?.isBlocked == false"
+                              *ngIf="item?.userStatus == 'ACTIVE'"><i class="fa fa-ban" rel="tooltip" title="Block"
+                                (click)="BlockModal(item?.id, 'BLOCK')"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm btn-icon" [disabled]="permissionObj?.isBlocked == false"
+                              *ngIf="item?.userStatus == 'BLOCK'"><i class="fa fa-ban" rel="tooltip" title="Unblock"
+                                (click)="BlockModal(item?.id, 'ACTIVE')" title="activate"></i>
+                            </button>
+                          </td>
+                          <td class=" text-center">
+                            <button class="btn btn-success btn-sm btn-icon"
+                              [disabled]="!item?.account?.eur_account?.details?.endUserId">
+                              <i class="fa fa-file" rel="tooltip" title="Kyc"
+                                (click)="LerexKycModal(item?.account?.eur_account?.details?.endUserId)"></i>
+                            </button>
+                          </td>
+  
+                          <td class=" text-center">
+                            <button class="btn btn-success btn-sm btn-icon">
+                              <i class="fa fa-list" rel="tooltip" title="checklist" data-toggle="modal"
+                                data-target="#checklistModal" (click)="checklist(item?.id,item)"></i>
+                            </button>
+                          </td> -->
+                        </tr>
+                        <tr *ngIf="userList.length == 0">
+                          <td class="table-no-record" colspan="9">No Record Found</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="custom-pagination mt-2" *ngIf="userList.length != 0" style="text-align: right;">
+                    <pagination-controls id="list" (pageChange)="pagination($event)"></pagination-controls>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

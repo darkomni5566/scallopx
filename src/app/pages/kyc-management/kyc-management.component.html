@@ -1,0 +1,101 @@
+<div class="wrapper">
+    <div class="main-panel">
+        <div class=" content">
+            <div class=" row">
+                <div class=" col-md-12">
+                    <div class=" card">
+                        <div class=" card-header" style="display: flex;">
+                            <i class=" tim-icons icon-single-02 mr-2" style="font-size: x-large"> </i>
+                            <h2>USER SIGNUP</h2>
+                        </div>
+                        <hr>
+                       
+
+                        <!---------------------NATIONALITY VIEW----------->
+                            <div class="row">
+                              
+    
+                                <!-- <div class="col-md-3">
+    
+                                    <div >
+                                        <input type="text" class="form-control dropdown-toggle" [(ngModel)]="searchKey" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="true" (click)="showOptions=true" (keyup)="search$.next($event.target.value)" />
+                                          
+                                        
+                                        <div class="dropdown-menu" [ngClass]="showOptions==true ? 'show':''" *ngIf="countryArr.length != 0">
+                                            <p class="cross"><i (click)="showOptions=false" class="fa fa-times pointer" aria-expanded="true"></i></p>
+                                            <a class="dropdown-item" href="javascript:void(0)"   *ngFor="let item of countryArr" (click)="showOptions=false;searchKey = item;currentPage = 1;getNationalityRiskList()">{{item}}</a>
+                                        </div>
+                                        <div class="dropdown-menu show" *ngIf="searchKey.length > 0 && countryArr.length == 0">
+                                            <a class="dropdown-item" href="javascript:void(0)">No record found!</a>
+                                        </div>
+
+                    
+                                    </div>
+                                </div> -->
+                                <!-- <div class=" col-md-2">
+                                    <button type="button" rel="tooltip" class="btn btn-warning btn-sm btn-icon" (click)="clearSearch()">
+                                        <i class="tim-icons icon-refresh-02"></i>
+                                    </button>
+                                </div> -->
+                                <div class=" col-md-3" >
+                                    <input class="form-control" type="file" id="fileUploader" name="fileUploader" (change)="fileChangeListener($event)" />
+                                </div>
+                                <!-- <button type="button" rel="tooltip" class="btn btn-warning btn-sm btn-icon" [disabled]="permissionObj?.isDownload == false" title="Download" (click)="ExportToCsv()">
+                                    <i class="fa fa-download" aria-hidden="true"></i>
+                                </button>                             -->
+                            </div>
+    
+                            <div class="row" *ngIf="preview == true">
+                                <div class=" col-md-4 text-center " style="text-align: end;margin-top: 4px;" >
+                                    <h4 class=" text-muted">
+                                        Total Records: {{csvRecords.length}} 
+                                    </h4>
+                                </div>
+                                <div class=" col-md-4 text-center " style="text-align: end;margin-top: 4px;" >
+                                    <h4 class=" text-muted">
+                                        Preview 
+                                    </h4>
+                                </div>
+                                <div class=" col-md-4 text-center " style="text-align: end;margin-top: 4px;" >
+                                    <button type="button" class="btn btn-danger" id="myfile" (click)="callApi()">Confirm & Upload</button> 
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class=" table-responsive" style="text-align: center;">
+                                    <table class=" table tablesorter" id="" >
+                                        <thead class=" text-primary">
+                                            <tr>
+                                               
+                                                <th>Email</th>
+                                                <th>password</th>
+                                                <th>Phone Number</th>
+                                                <!-- <th *ngIf="csvRecords.length == 0 && nationalityList.length > 0">Action</th> -->
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let data of myArr;let i=index">
+                                               
+                                                <td>{{data?.email}}</td>
+                                                <td>{{data?.password}}</td>
+                                                <td>{{data?.phoneNo}}</td>
+
+                                                <!-- <td>
+                                                    <input class=" form-control" type="text" [value]="data?.risk" [disabled]="data.disable" [id]="i+'type-preview'" (keypress)="server.ValidateAlpha($event);" />
+                                                </td>
+                                                <td>
+                                                    <input class=" form-control" type="text" [value]="data?.score" [disabled]="data.disable" [id]="i+'score-preview'" (keypress)="server.numberOnly($event)" />
+                                                </td> -->
+                                              
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                  
+                                </div>
+                            </div>  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+.navbar-color {
+    font-weight: 600;
+}
+.active {
+    font-weight: 600;
+}
+.navbar-color {
+    font-weight: 600;
+}
+.navbar-color:hover {
+    background-color: #83b0dc;
+}
+.active:hover {
+    background-color: #83b0dc;
+}
+@media (min-width: 320px) and (max-width: 375px) {
+    .usermg {
+        padding: 10px;
+    }
+}
+@media (min-width: 320px) and (max-width: 570px) {
+    .trnsct {
+        font-size: 12px;
+    }
+    .confmg {
+        font-size: 10px;
+    }
+    .feemg {
+        font-size: 17px;
+    }
+    .tranmg {
+        font-size: 11px;
+    }
+}

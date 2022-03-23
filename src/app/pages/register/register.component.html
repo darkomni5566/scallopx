@@ -1,0 +1,117 @@
+<div class="contentLogin">
+    <div class=" mainClass">
+        <!-------------login -------------------------------->
+        <div class="col-lg-4 col-md-12">
+            <div class=" card p-3">
+                <div class=" card-body">
+                    <h3 class="d-flex align-items-center mb-3"><i
+                        class="material-icons text-info mr-2">REGISTER</i></h3>
+                    <form [formGroup]="loginForm"  autocomplete="no" novalidate >
+                        <div class="form-group">
+                            <div>
+                                <label>Email</label>
+                                <div class="form-group has-search">
+
+                                    <input type="text" class="form-control" placeholder="Enter Registered Email-ID"
+                                        formControlName="email" maxlength="60">
+                                    <span class="fa fa-envelope form-control-feedback"></span>
+                                </div>
+
+                            </div>
+                            <div *ngIf="loginForm.get('email').invalid && (loginForm.get('email').touched || loginForm.get('email').dirty)"
+                                class="error">
+                                <p *ngIf="loginForm.get('email').errors.required" class="error">
+                                    *Please Enter Registered Email-ID.</p>
+                                <p *ngIf="loginForm.get('email').errors.pattern" class="error">*Please Enter Valid
+                                    Registered Email-ID.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Mobile Number</label>
+                            <div class="form-group has-search">
+                                <ngx-intl-tel-input [cssClass]="'custom form-control'" [preferredCountries]="preferredCountries"
+                                    [enableAutoCountrySelect]="true" [enablePlaceholder]="true" [searchCountryFlag]="true"
+                                    [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]" [selectFirstCountry]="false"
+                                    [selectedCountryISO]="CountryISO.India" [maxLength]="15" 
+                                    [phoneValidation]="true" [separateDialCode]="separateDialCode"
+                                    [numberFormat]="PhoneNumberFormat.National" name="phone" formControlName="phone">
+                                </ngx-intl-tel-input>
+                            </div>
+                            <!-- <span
+                            *ngIf="loginForm.get('phone').hasError('required') && (loginForm.get('phone').dirty || loginForm.get('mobile').touched)" class="error">
+                            *Please Enter Mobile Number.
+                        </span> -->
+                        <span *ngIf="loginForm.get('phone').hasError('pattern')" class="error">
+                            *Please Enter Valid mobile Number.
+                        </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Enter a secure password</label>
+
+                            <div class="form-group has-search">
+
+                                <input type={{selectedType}} class="form-control pointer" placeholder="Enter Password"
+                                    formControlName="password"
+                                    (click)="selectedType = (selectedType == 'text') ? 'password' : 'text'">
+                                <span [ngClass]="selectedType =='password' ? 'fas fa-eye-slash' : 'fas fa-eye'"
+                                    class="form-control-feedback pointer"></span>
+                            </div>
+                            <span *ngIf="password.invalid && password.touched" class="error">
+                                <span *ngIf="password.errors.required">*Please Enter password.</span>
+                            </span>
+
+                            <span *ngIf="loginForm.get('password').hasError('pattern')" class="error">
+                                *Password must be a minimum length of 8 characters which should be a combination of alpha numeric & a special character.</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Re-enter a password</label>
+                            <div class="form-group has-search">
+                                <input type={{selectedTypeConfirm}} class="form-control pointer"
+                                    placeholder="Enter Confirm Password" formControlName="confirmPassword"
+                                    (click)="selectedTypeConfirm = (selectedTypeConfirm == 'text') ? 'password' : 'text'">
+                                <span
+                                    [ngClass]="selectedTypeConfirm =='confirmPassword' ? 'fas fa-eye-slash' : 'fas fa-eye'"
+                                    class="form-control-feedback pointer"></span>
+                            </div>
+                            <div *ngIf="loginForm.get('confirmPassword').dirty" class="error">
+                                <span
+                                    *ngIf="loginForm.get('confirmPassword').value != loginForm.get('password').value">*Password
+                                    mismatched.</span>
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="forgot-div">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" formControlName='rememberMe'
+                                    id="exampleCheck1">
+                                <label class="form-check-label" for="exampleCheck1">I hereby accept all the <a href="#">terms & conditions.</a></label>
+                            </div>
+                        </div>
+                        <div class="forgot-div">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" formControlName='rememberMe2'
+                                    id="exampleCheck2">
+                                <label class="form-check-label" for="exampleCheck2">I hereby accept all the <a href="#">marketing & communication terms of service.</a></label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class=" card-footer text-center">
+                    <button class=" btn btn-fill" type="submit" (click)="signup()" >SIGN
+                        UP</button>
+                </div>
+                <!-- <div class="routerSign">Don't have an account?
+                    <a href="#" style="text-decoration: underline;">
+                        Sign Up
+                    </a>
+                </div> -->
+            </div>
+        </div>
+
+    </div>
+</div>

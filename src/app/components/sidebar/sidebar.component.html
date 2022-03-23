@@ -1,0 +1,45 @@
+<div class="logo">
+    <a [routerLink]="[ '/dashboard'] " class="simple-text logo-mini">
+        <div class="logo-img">
+            <img src="./assets/img/logo.jpeg"  style="border-radius: 50%;"/>
+            <!-- <img src="https://www.scallopx.com/static/media/logo.bb25958f.svg" /> -->
+        </div>
+    </a>
+    <a [routerLink]="[ '/dashboard'] " class="simple-text logo-normal" style="font-weight: 700;">
+    Scallop
+  </a>
+</div>
+<div class="sidebar-wrapper">
+    <ul class="nav">
+
+        <!-- <li  routerlinkactive="active" *ngFor="let menuItem of adminmenuItems" class="{{ menuItem.class }} nav-item"  >
+            <a data-toggle="collapse" [attr.data-target]="menuItem?.hash_id" *ngIf="menuItem.children.length > 0 ">
+                <i class="tim-icons {{ menuItem.icon }} "></i>
+                <p>{{ menuItem.title }}<b class="caret"></b></p>
+            </a>
+            <a data-toggle="collapse" [routerLink]="[menuItem.path]" [attr.data-target]="menuItem?.hash_id" *ngIf="!menuItem.children.length > 0 ">
+                <i class="tim-icons {{ menuItem.icon }} "></i>
+                <p>{{ menuItem.title }}</p>
+            </a>
+            <div class="collapse" id="{{menuItem?.id}}" *ngIf="menuItem.children.length > 0 ">
+                <ul class="nav ">
+                    <li routerlinkactive="active " *ngFor="let item of menuItem?.children">
+                        <a [routerLink]="[item.path]">
+                            <span class="sidebar-mini-icon ">B</span>
+                            <span class="sidebar-normal ">{{item.title}}</span>
+                        </a>
+
+                        
+                    </li>
+                </ul>
+            </div>
+        </li> -->
+
+        <li routerLinkActive="active" *ngFor="let menuItem of menuItems" [class]="menuItem?.class">
+            <a [routerLink]="menuItem?.path">
+                <i class="tim-icons  {{ menuItem?.icon }}"></i>
+                <p>{{ menuItem?.title }}</p>
+            </a>
+        </li> 
+    </ul>
+</div>

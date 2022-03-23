@@ -1,0 +1,206 @@
+<div class="wrapper">
+    <div class="main-panel">
+        <div class=" content">
+            <div class=" row">
+                <div class=" col-md-12">
+                    <div class=" card">
+                        <div class=" card-header" style="display: flex;">
+                            <i class=" tim-icons icon-paper mr-2" style="font-size: x-large"> </i>
+                            <h2>{{title}}</h2>
+                        </div>
+                        <hr>
+                        <div class="row ml10" *ngIf="buttonName != 'View'">
+
+                            <div class=" col-md-3">
+
+                                <div>
+                                    <label>
+                                        <h4 class=" text-muted" style="margin-bottom: auto;">Email</h4>
+                                    </label>
+                                </div>
+                                <div class=" form-group">
+                                    <input class="form-control" placeholder="Search by email" type="text"
+                                        [(ngModel)]="searchKey" (keypress)="server.preventSpaceInStart($event)" />
+                                </div>
+                            </div>
+
+                            <div class=" col-md-2">
+                                <div>
+                                    <label>
+                                        <h4 class=" text-muted" style="margin-bottom: auto;">From</h4>
+                                    </label>
+                                </div>
+                                <div class=" form-group">
+                                    <input class=" form-control dtfld" type="date" [(ngModel)]="fromDate"
+                                        (change)="onFromSelect()" [max]="maxFromDate" />
+                                </div>
+                            </div>
+                            <div class=" col-md-2">
+                                <div>
+                                    <label>
+                                        <h4 class=" text-muted" style="margin-bottom: auto;">To</h4>
+                                    </label>
+                                </div>
+                                <div class=" form-group">
+                                    <input class=" form-control dtfld" type="date" [(ngModel)]="toDate"
+                                        (change)="onToSelect()" [min]="maxToDate" />
+                                </div>
+                            </div>
+                            <div class="col-md-2 text-center">
+
+                                <div class="btn-group mt25">
+                                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                        {{(eventType | slice:0:10) || 'Activity Type'}}
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="javascript:void(0)"
+                                            *ngFor="let data of userStatus"
+                                            (click)="eventType = data;currentPage = 1;getUserList()">{{data}}</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-1 text-center">
+
+                                <div class="btn-group mt25">
+                                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                        {{ selectedRole || 'Role'}}
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="javascript:void(0)"
+                                            *ngIf="selectedRole != 'ADMIN'"
+                                            (click)="selectedRole='ADMIN';currentPage = 1;getUserList()">ADMIN</a>
+                                        <a class="dropdown-item" href="javascript:void(0)"
+                                            *ngIf="selectedRole != 'USER'"
+                                            (click)="selectedRole='USER';currentPage = 1;getUserList()">USER</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class=" col-md-2 text-center">
+                                <button type="button" rel="tooltip" title="Filter"
+                                    class="mt25 btn btn-info btn-sm btn-icon" (click)="currentPage = 1;getUserList()">
+                                    <i class="tim-icons icon-zoom-split"></i>
+                                </button>&nbsp;&nbsp;
+                                <button type="button" rel="tooltip" title="Reset"
+                                    class="mt25 btn btn-warning btn-sm btn-icon" (click)="clearSearch()">
+                                    <i class="tim-icons icon-refresh-02"></i>
+                                </button>
+                            </div>
+
+
+                        </div>
+                        <div class=" card-body" *ngIf="buttonName != 'View'">
+
+                            <div class=" table-responsive" style="text-align: center;">
+                                <table class=" table tablesorter" id="">
+                                    <thead class=" text-primary">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Date</th>
+                                            <th>Email</th>
+                                            <th>Role</th>
+                                            <th>IP</th>
+                                            <th>Action</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            *ngFor="let item of userList | paginate: { itemsPerPage: itemPerPage,totalItems:totalItems, currentPage: currentPage};let i=index">
+                                            <td>{{itemPerPage * (currentPage-1)+ i+1}}</td>
+                                            <td>{{item?.creationTime | date : "medium"}}<br>
+                                                <label>{{item?.ago}} <span *ngIf="item?.ago">ago</span></label>
+                                            </td>
+                                            <td>{{item?.email}}</td>
+                                            <td>{{item?.role || '---'}}</td>
+                                            <td>{{item?.ip|| '---'}}</td>
+                                            <td>{{item?.eventType || '---'}}</td>
+                                            <td class="cell">{{item?.activityDetails?.message}}</td>
+
+
+                                            <!-- <td><p class="dumy-field" style="word-break: break-all">
+                                                <span style="word-break: break-all">
+                                                    {{item?.activityDetails?.message || '---'}}
+                                              </span>
+                                            </p></td> -->
+                                            <!-- <td class=" text-center">
+                                                <button class="btn btn-warning btn-sm btn-icon"><i
+                                                        class="fas fa-eye" skipLocationChange="true" [routerLink]="[ '/user-detail', item?.encryptedId] " title="View "></i></button>&nbsp;&nbsp;
+                                            </td> -->
+                                        </tr>
+                                        <tr *ngIf="userList.length == 0">
+                                            <td class="table-no-record" colspan="9">No Record Found</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="custom-pagination mt-2" *ngIf="!userList.length == 0"
+                                style="text-align: right;">
+                                <pagination-controls (pageChange)="pagination($event)"></pagination-controls>
+                            </div>
+                        </div>
+                        <!-----------------Activity view------------------------>
+                        <div class=" card-body" *ngIf="buttonName == 'View'">
+                            <div class="card-footer">
+                                <button class="btn btn-fill btn-danger" type="submit" (click)="navigateTo()"><i
+                                        class="fa fa-arrow-left mr10"></i>Back</button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class=" table tablesorter" id="">
+                                    <tbody>
+                                        <tr class="text-left">
+                                            <td></td>
+                                            <td class="heading">Name</td>
+                                            <td>{{userDetailsObj?.firstName}} {{userDetailsObj?.lastName }}</td>
+                                        </tr>
+                                        <tr class="text-left">
+                                            <td></td>
+                                            <td class="heading">Mobile Number</td>
+                                            <td>{{userDetailsObj?.phoneNumber}}</td>
+                                        </tr>
+                                        <tr class="text-left">
+                                            <td></td>
+                                            <td class="heading">Updated At</td>
+                                            <td>{{(userDetailsObj?.updatedOn | date) }}</td>
+                                        </tr>
+                                        <tr class="text-left">
+                                            <td></td>
+                                            <td class="heading">Status</td>
+                                            <td>{{userDetailsObj?.status }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!------------delete modal ----------->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Delete</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                Are you sure you want to delete this user?
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success modalSpace" data-dismiss="modal"
+                    (click)="deleteUser()">Yes</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+            </div>
+
+        </div>
+    </div>
+</div>

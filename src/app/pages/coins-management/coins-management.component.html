@@ -1,0 +1,203 @@
+<div class=" content">
+    <div class=" row">
+        <div class=" col-md-12">
+
+            <div class=" card">
+                <div class=" card-header" style="display: flex;">
+                    <i class=" tim-icons icon-coins mr-2" style="font-size: x-large"> </i>
+                    <h2 *ngIf="buttonName == 'LIST'">Coins Management</h2>
+                    <h2 *ngIf="buttonName == 'SAVE'">Create Coin</h2>
+                    <h2 *ngIf="buttonName == 'VIEW'">Coin Detail</h2>
+                    <h2 *ngIf="buttonName == 'UPDATE'">Update Coin</h2>
+                    <div class="pdlf">
+                        <button class="btn btn-success editBack" *ngIf="buttonName == 'VIEW'" (click)="onEditAction()"
+                            [disabled]="permissionObj?.isUpdate == false" title="Edit"> EDIT</button>&nbsp;&nbsp;
+                        <button class="btn btn-success bckb"
+                            *ngIf="buttonName == 'VIEW' || buttonName == 'SAVE' || buttonName == 'UPDATE'"
+                            (click)="back()">
+                            BACK
+                        </button>
+
+                        <button class="btn btn-success cretr" *ngIf="buttonName == 'LIST'"
+                            [disabled]="permissionObj?.isCreate == false" title="Add" (click)="onCreateAction()">CREATE
+                            COIN +</button>
+                    </div>
+
+                </div>
+
+                <hr>
+
+
+                <!------------------------------coin list --------------------->
+                <div class=" card-body" *ngIf="buttonName == 'LIST'">
+
+                    <div class="row my-row pointer"
+                        *ngFor="let item of roleList | paginate: { itemsPerPage: itemPerPage,totalItems:totalItems, currentPage: currentPage};let i = index"
+                        [attr.disabled]="permissionObj?.isRead == false ? true : null">
+                        <div class="col-md-1" (click)="viewDetailsObj(item)">
+                            <span>...<br>...
+                            </span>
+                        </div>
+                        <div class="col-md-1" (click)="viewDetailsObj(item)">
+                            <img [src]="item?.coinImage ? item?.coinImage :'assets/img/default-avatar.png'"
+                                class="img-size pointer" title="View">
+                        </div>
+
+                        <div class="col-md-6 text-left" (click)="viewDetailsObj(item)">
+                            <div>
+                                <label><b>{{item?.coinFullName}}</b></label>
+                            </div>
+
+
+                            <div>
+                                <label>{{item?.coinName}}</label>
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-4 text-left">
+                            <div>
+                                Created At &nbsp;<label><b>{{item?.creationTime | date:'mediumDate'}}</b></label><br>
+                                Network &nbsp;<label><b>{{item?.network || '---'}}</b></label><br>
+                                Token Type &nbsp;<label><b>{{item?.tokenType || '---'}}</b></label><br>
+                                Coin Id &nbsp;<label><b>{{item?.coinId}} </b>&nbsp;<i class="fas fa-copy pointer"
+                                        rel="tooltip" title="copy" (click)="server.copy(coinId)"></i></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="custom-pagination mt-5" style="text-align: center;" *ngIf="!roleList.length == 0">
+                        <pagination-controls (pageChange)="pagination($event)">
+                        </pagination-controls>
+                    </div>
+                </div>
+
+
+                <!------------------------------coin view --------------------->
+                <div class=" card-body" *ngIf="buttonName != 'LIST'">
+                    <form [formGroup]="adminForm" (ngSubmit)="onSubmit()">
+                        <div class=" row">
+                            <div class=" col-md-6 pr-md-1">
+                                <div class=" form-group">
+                                    <label>Coin Full Name <span class="redRole">*</span></label>
+                                    <input class=" form-control" placeholder="Enter Coin Full Name" type="text"
+                                        formControlName="coinFullName" />
+                                </div>
+                                <div *ngIf="adminForm.get('coinFullName').invalid && (adminForm.get('coinFullName').touched || adminForm.get('coinFullName').dirty)"
+                                    class="error">
+                                    <p *ngIf="adminForm.get('coinFullName').errors.required" class="error">
+                                        *Please Enter Coin Full Name.</p>
+                                    <p *ngIf="adminForm.get('coinFullName').errors.pattern" class="error">*Please Enter
+                                        Valid
+                                        Coin Full Name.</p>
+                                </div>
+                            </div>
+                            <div class=" col-md-6 pl-md-1">
+                                <div class=" form-group">
+                                    <label>Coin Name <span class="redRole">*</span></label>
+                                    <input class=" form-control" placeholder="Enter Coin Name" type="text"
+                                        formControlName="coinName" />
+                                </div>
+                                <div *ngIf="adminForm.get('coinName').invalid && (adminForm.get('coinName').touched || adminForm.get('coinName').dirty)"
+                                    class="error">
+                                    <p *ngIf="adminForm.get('coinName').errors.required" class="error">
+                                        *Please Enter Coin Name.</p>
+                                    <p *ngIf="adminForm.get('coinName').errors.pattern" class="error">*Please Enter
+                                        Valid
+                                        Coin Name.</p>
+                                </div>
+                            </div>
+                            <div class=" col-md-6 pr-md-1">
+
+                                <div>
+                                    <div>
+                                        <label> Coin Image </label>
+                                        <div>
+                                            <input class=" form-control" type="file" placeholder="Enter Image Url"
+                                                accept=".tif, .tiff, .bmp, .jpg, .jpeg, .gif, .png, .eps"
+                                                formControlName="imageUrl" (change)="handleInputChange($event)" />
+                                            <div *ngIf="adminForm.get('imageUrl').invalid && (adminForm.get('imageUrl').touched || adminForm.get('imageUrl').dirty)"
+                                                class="error">
+                                                <p *ngIf="adminForm.get('imageUrl').errors.required" class="error">
+                                                    *Please Enter Image.</p>
+                                            </div>
+                                            <img *ngIf="buttonName != 'SAVE'" class="upload-img-size" [src]="imageUrl"
+                                                alt="" />
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class=" col-md-6 pl-md-1">
+                                <div class=" form-group">
+                                    <label>Token Type<span class="redRole">*</span></label>
+                                    <input class=" form-control" placeholder="Enter Token Type" type="text"
+                                        formControlName="tokenType" />
+                                </div>
+                                <div *ngIf="adminForm.get('tokenType').invalid && (adminForm.get('tokenType').touched || adminForm.get('tokenType').dirty)"
+                                    class="error">
+                                    <p *ngIf="adminForm.get('tokenType').errors.required" class="error">
+                                        *Please Enter Token Type.</p>
+                                    <p *ngIf="adminForm.get('tokenType').errors.pattern" class="error">*Please Enter
+                                        Valid
+                                        Token Type.</p>
+                                </div>
+                            </div>
+                            <div class=" col-md-6 pr-md-1">
+                                <div class=" form-group">
+                                    <label class="row col-md-12">Network<span class="redRole">*</span> <span
+                                            class="addNetwork"><i class="fa fa-plus pointer" aria-hidden="true"
+                                                (click)="addNetwork()"></i>
+                                        </span></label>
+                                    <div class="row" *ngFor="let item of networkArr;let i=index">
+                                        <div class="col-md-6">
+                                            <input class=" form-control mt10" placeholder="Enter Network" type="text"
+                                                [id]="i" [disabled]="item?.disable" [value]="item.value" />
+
+                                        </div>
+                                        <div class="col-md-6 mt15">
+                                            <span class="my-clr" title="Remove" *ngIf="i!=0"><i class="fas fa-times"
+                                                    (click)="removeNetwork(i)"></i></span>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <!-- <div *ngIf="adminForm.get('network').invalid && (adminForm.get('network').touched || adminForm.get('network').dirty)"
+                                    class="error">
+                                    <p *ngIf="adminForm.get('network').errors.required" class="error">
+                                        *Please Enter Network.</p>
+                                    <p *ngIf="adminForm.get('network').errors.pattern" class="error">*Please Enter Valid
+                                        Network.</p>
+                                </div> -->
+                            </div>
+                            <div class=" col-md-6 pl-md-1">
+                                <div class=" form-group">
+                                    <label>Asset Id<span class="redRole">*</span></label>
+                                    <input class=" form-control" placeholder="Enter Asset Id" type="text"
+                                        formControlName="assetId" />
+                                </div>
+                                <div *ngIf="adminForm.get('assetId').invalid && (adminForm.get('assetId').touched || adminForm.get('assetId').dirty)"
+                                    class="error">
+                                    <p *ngIf="adminForm.get('assetId').errors.required" class="error">
+                                        *Please Enter Asset Id.</p>
+                                    <p *ngIf="adminForm.get('assetId').errors.pattern" class="error">*Please Enter Valid
+                                        Asset Id.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="mt-5 card-footer">
+                        <button class="btn btn-success" [disabled]="!adminForm.valid" *ngIf="buttonName != 'VIEW'"
+                            [title]="buttonName"
+                            (click)="buttonName == 'UPDATE'? updateCoin() : saveCoin()">{{buttonName}}</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

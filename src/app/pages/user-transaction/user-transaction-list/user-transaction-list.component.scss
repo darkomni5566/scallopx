@@ -1,0 +1,28 @@
+
+.heading{
+    font-weight: 700;
+}
+/* width */
+::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #212529; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgb(0, 0, 0); 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(2, 2, 2); 
+  }
+  .table-responsive {
+    overflow-x: scroll;
+    text-align: center; 
+}

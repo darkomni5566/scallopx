@@ -1,0 +1,259 @@
+<div class="wrapper">
+    <div class="main-panel">
+        <div class=" content">
+            <div class=" row">
+                <div class=" col-md-12">
+                    <div class=" card">
+                        <div class=" card-header" style="display: flex;">
+                            <i class=" tim-icons icon-single-02 mr-2" style="font-size: x-large"> </i>
+                            <h2>Transaction Resolution</h2>
+                        </div>
+                        <hr>
+
+                        <div class=" card-body">
+                            <div style="margin-bottom: 1%;">
+                                <button class=" btn btn-fab" [ngClass]="tabName == 'Transaction' ? 'active':'tabColor'"
+                                    style="margin-right: 4px;" type="submit" (click)="tabName = 'Transaction'">Transaction</button>
+                                <button class=" btn btn-fab" [ngClass]="tabName == 'EndUser' ? 'active':'tabColor'"
+                                    style="margin-right: 4px;" type="submit"
+                                    (click)="tabName = 'EndUser'">EndUser</button>
+                                <button class=" btn btn-fab" [ngClass]="tabName == 'Beneficiary' ? 'active':'tabColor'"
+                                    style="margin-right: 4px;" type="submit"
+                                    (click)="tabName = 'Beneficiary'">Beneficiary</button>
+                            </div>
+                        </div>
+
+                        <div class=" card-body" *ngIf="tabName == 'Transaction'" >
+                            <div class=" table-responsive" style="text-align: center;">
+                                <table class=" table tablesorter" id="">
+                                    <thead class=" text-primary">
+                                        <tr>
+                                            <!-- <th>#</th> -->
+                                            <th>Symbol</th>
+                                            <th>side</th>
+                                            <th>amount</th>
+                                            <th>price</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            *ngFor="let item of userList.qr_transactions | paginate: { itemsPerPage: itemPerPage,totalItems:totalItems, currentPage: currentPage};let i=index">
+                                            <td>{{item?.symbol || 'N/A'}}</td>
+                                            <td>{{item?.side || '---' }}</td>
+                                            <td>{{item?.amount || '---'}}</td>
+                                            <td>{{item?.price || '---' }}</td>
+                                            <td>{{(item?.time | date) || '---' }}</td>
+                                        </tr>
+                                        <tr *ngIf="userList.length == 0">
+                                            <td class="table-no-record" colspan="9">No Record Found</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="custom-pagination mt-2" style="text-align: right;" *ngIf="!userList.length == 0">
+                                <pagination-controls (pageChange)="pagination($event)"></pagination-controls>
+                            </div>
+                        </div>
+                        <div class=" card-body" *ngIf="tabName == 'EndUser'" >
+                            <div class=" table-responsive" style="text-align: center;" *ngIf="buttonName != 'View'">
+                                <table class=" table tablesorter" id="">
+                                    <thead class=" text-primary">
+                                        <tr>
+                                            <!-- <th>#</th> -->
+                                            <th style="width: 100px;">Date</th>
+                                            <th>UserName</th>
+                                            <th>Rule</th>
+                                            <th>Reason</th>
+                                            <th>status</th>
+                                            <th class="w100">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            *ngFor="let item of userList.qr_endusers">
+                                            <td>{{item?.qr_created_at | date}}</td>
+                                            <td>{{item?.enduser_id || '---' }}</td>
+                                            <td>{{item?.compliance_firewall_result.rule.name || '---'}}</td>
+                                            <td *ngFor="let reason of item?.compliance_firewall_result?.rule?.reason">{{reason?.name}}
+                                                : {{reason?.result}} : {{reason?.text}}</td>
+                                            <td>{{item?.enduser_status || '---'}}</td>
+                                            <td class=" text-center">
+                                                <button class="btn btn-warning button-action">SDD</button>&nbsp;
+                                                <button class="btn btn-warning button-action">EDD </button>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="userList.length == 0">
+                                            <td class="table-no-record" colspan="9">No Record Found</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="custom-pagination mt-2" style="text-align: right;" *ngIf="!userList.length == 0">
+                                <pagination-controls (pageChange)="pagination($event)"></pagination-controls>
+                            </div>
+                        </div>
+                        <div class=" card-body" *ngIf="tabName == 'Beneficiary'" >
+                            <div class=" table-responsive" style="text-align: center;">
+                                <table class=" table tablesorter" id="">
+                                    <thead class=" text-primary">
+                                        <tr>
+                                            <!-- <th>#</th> -->
+                                            <th>Symbol</th>
+                                            <th>side</th>
+                                            <th>amount</th>
+                                            <th>price</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            *ngFor="let item of userList.qr_beneficiaries | paginate: { itemsPerPage: itemPerPage,totalItems:totalItems, currentPage: currentPage};let i=index">
+                                            <td>{{item?.symbol || 'N/A'}}</td>
+                                            <td>{{item?.side || '---' }}</td>
+                                            <td>{{item?.amount || '---'}}</td>
+                                            <td>{{item?.price || '---' }}</td>
+                                            <td>{{(item?.time | date) || '---' }}</td>
+                                        </tr>
+                                        <tr *ngIf="userList.length == 0">
+                                            <td class="table-no-record" colspan="9">No Record Found</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="custom-pagination mt-2" style="text-align: right;" *ngIf="!userList.length == 0">
+                                <pagination-controls (pageChange)="pagination($event)"></pagination-controls>
+                            </div>
+                        </div>
+
+
+                        <!-- <div class="card-body" *ngIf="buttonName == 'View'">
+                            <div class="table-responsive" >
+                                <div class="container main-card">
+
+                                    <div class="row">
+                                        <div class="col-md-6 col-lg-6 col-sm-6 text-right">
+                                            <img [src]="userDetailsObj?.imageUrl ? userDetailsObj?.imageUrl:'assets/img/default-avatar.png'" class="user-img">
+                                        </div>
+                                        <div class="col-md-6 col-lg-6 col-sm-6 text-left">
+                                            <div>
+                                                <span><b>{{userDetailsObj?.firstName}} {{userDetailsObj?.lastName || '---'}}</b></span>
+                                                <label class="ml-10"><i class="fa fa-circle" aria-hidden="true"
+                                                    [ngClass]="{'orange':userDetailsObj?.userStatus == 'UNVERIFIED','green':userDetailsObj?.userStatus == 'ACTIVE','red':userDetailsObj?.userStatus == 'BLOCK' }"></i>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row new-card">
+                                        <div class="col-md-6 col-lg-6 col-sm-6 text-center">
+                                            <span class="number1"><i class="fa fa-phone pointer" aria-hidden="true" style="transform: rotate(90deg);" title="Phone Number"></i></span>
+                                        </div>
+                                        <div class="col-md-6 col-lg-6 col-sm-6 text-left">
+                                            <span class="number1">{{userDetailsObj?.phoneNumber || '---'}}</span>
+                                        </div>
+                                        <div class="col-md-6 col-lg-6 col-sm-6 text-center">
+                                            <span class="number1"><i class="fa fa-envelope pointer" aria-hidden="true" title="Email"></i></span>
+                                        </div>
+                                        <div class="col-md-6 col-lg-6 col-sm-6 text-left">
+                                            <span class="number1">{{userDetailsObj?.email || '---'}}</span>
+                                        </div>
+                                        <div class="col-md-6 col-lg-6 col-sm-6 text-center">
+                                            <span class="number1"><i class="fa fa-home pointer" aria-hidden="true" title="Address"></i></span>
+                                        </div>
+                                        <div class="col-md-6 col-lg-6 col-sm-6 text-left">
+                                            <span class="number1">{{userDetailsObj?.address || '---'}}</span>
+                                        </div>
+
+                                        <div class="col-md-6 col-lg-6 col-sm-6 text-center">
+                                            <span class="number1"><i class="fa fa-address-card pointer" aria-hidden="true" title='KYC'></i></span>
+                                        </div>
+                                        <div class="col-md-6 col-lg-6 col-sm-6 text-left">
+                                            <span class="number1">{{userDetailsObj?.kycStatus || '---'}}</span>
+                                        </div>
+                                        
+                                    </div>
+
+
+                                    <div class="row new-card" *ngIf="userDetailsObj?.kycDetails?.application?.fields.length > 0">
+                                        <div class="col-md-12 text-center">
+                                            <span><b>User KYC Details</b></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row new-card" *ngFor="let item of userDetailsObj?.kycDetails?.application?.fields">
+                                        
+                                        <div class="col-md-6 col-lg-6 col-sm-6 text-center">
+                                            <span class="number1">{{item?.category}}</span>
+                                        </div>
+                                        <div class="col-md-6 col-lg-6 col-sm-6 text-left">
+                                            <span class="number1">{{item?.content}}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row new-card" *ngIf="userDetailsObj?.kycDetails?.application?.documents.length > 0">
+                                        <div class="col-md-12 text-center ">
+                                            <span><b>User KYC Documents</b></span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row new-card" *ngFor="let item of userDetailsObj?.kycDetails?.application?.documents">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 text-center mt10">
+                                            <span class="doc-name"><b>{{item?.documentType}}</b></span>
+                                        </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 text-center" *ngFor="let sub_item  of item?.files">
+                                                <div>
+                                                    <span class="number1">{{sub_item?.kind}}</span>
+                                                </div>
+                                                <div>
+                                                    <span class="number1"><a [href]="sub_item?.uri" target="_blank" class="pointer"><img [src]="sub_item?.uri" class="doc-img"></a></span>
+                                                </div>
+                                            </div>
+                                           
+                                    </div>
+                                </div>
+
+                                
+                            </div>
+                        </div> -->
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+<!------------delete modal ----------->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Delete</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                Are you sure you want to delete this transaction?
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success modalSpace" data-dismiss="modal">Yes</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+            </div>
+
+        </div>
+    </div>
+</div>

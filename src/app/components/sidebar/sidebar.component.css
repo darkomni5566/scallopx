@@ -1,0 +1,6 @@
+p {
+    font-weight: 600 !important;
+}
+::ng-deep .sidebar .sidebar-wrapper {
+    min-height: 80%;
+}

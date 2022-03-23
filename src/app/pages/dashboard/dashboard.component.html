@@ -1,0 +1,52 @@
+<div class="wrapper">
+  <div class="main-panel">
+    <div class=" content">
+      <div class=" row">
+        <div class=" col-12">
+          <div class=" card card-chart">
+            <div class=" card-header" *ngIf="permissionObj !=null">
+              <div class=" row">
+                <div class="col-md-2 col-lg-2 col-sm-2">
+                  <div class="card-body shadow-lg p-3 mb-3 bg-white rounded"><span class="total-user-alignment">TOTAL
+                      USERS </span><span class="f-right">{{dashBoardList?.UK?.totalUsers +
+                      dashBoardList?.EUR?.totalUsers + dashBoardList?.ROW?.totalUsers}}</span></div>
+                  <div class="card-body shadow-lg p-3 mb-3 bg-white rounded"><span class="total-user-alignment">UK
+                      USERS</span> <span class="f-right">{{dashBoardList?.UK?.totalUsers}}</span></div>
+                  <div class="card-body shadow-lg p-3 mb-3 bg-white rounded"><span class="total-user-alignment">EUR
+                      USERS </span><span class="f-right">{{dashBoardList?.EUR?.totalUsers}}</span></div>
+                  <div class="card-body shadow-lg p-3 mb-3 bg-white rounded"><span class="total-user-alignment">ROW
+                      USERS</span> <span class="f-right">{{dashBoardList?.ROW?.totalUsers}}</span></div>
+                </div>
+                <div class="col-md-5 col-lg-5 col-sm-5">
+                  <div id="chartdiv">
+                  </div>
+                  <p class="user-alignment">USERS BY COUNTRY</p>
+                </div>
+                <div class="col-md-5 col-lg-5 col-sm-5">
+                  <div id="chartdiv1">
+                  </div>
+                  <P class="user-alignment">USERS BY KYC STATUS</P>
+                </div>
+              </div>
+              <div class="row mt-4">
+
+                <div class="col-md-6 col-lg-6 col-sm-6">
+                  <div class="card-body shadow-lg p-3 mb-3 bg-white rounded"><span class="total-user-alignment">TOTAL
+                      FIAT TRANSACTIONS </span><span class="f-right">GBP 1,00,000</span></div>
+                </div>
+                <div class="col-md-6 col-lg-6 col-sm-6">
+                  <div class="card-body shadow-lg p-3 mb-3 bg-white rounded"><span class="total-user-alignment">TOTAL
+                      CRYPTO TRANSACTIONS</span><span class="f-right">GBP 1,00,000</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="card-header" *ngIf="permissionObj == null">
+              <h3>Permission Denied</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

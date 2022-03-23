@@ -1,0 +1,56 @@
+.heading {
+    font-weight: 700;
+}
+
+/* width */
+
+::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+}
+
+/* Track */
+
+::-webkit-scrollbar-track {
+    background: #212529;
+}
+
+.mr10 {
+    margin-right: 10px;
+}
+.user-img {
+    max-width: 50px;
+    min-width: 50px;
+    max-height: 50px;
+    object-fit: contain;
+    object-position: center;
+}
+
+.mt25 {
+    margin-top: 25px;
+}
+
+.cell {
+    max-width: 50px;
+    text-align: justify;
+}
+
+.ml10 {
+    margin-left: 10px;
+}
+
+.dropdown-menu {
+    max-height: 190px;
+    overflow-y: scroll;
+}
+p.dumy-field {
+    font-size: 15px;
+    color: #000000;
+    font-family: "Product Sans";
+    text-align: justify;
+    width: 317px;
+    position: inherit;
+}
+.dtfld {
+    padding: 0px 0px 0px 10px;
+}

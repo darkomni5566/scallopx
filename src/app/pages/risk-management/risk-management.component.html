@@ -1,0 +1,186 @@
+<div class="wrapper">
+    <div class="main-panel">
+        <div class=" content">
+            <div class=" row">
+                <div class=" col-md-12">
+                    <div class=" card">
+                        <div class=" card-header" style="display: flex;">
+                            <i class=" tim-icons icon-single-02 mr-2" style="font-size: x-large"> </i>
+                            <h2 class="rism">RISK MANAGEMENT</h2>
+                        </div>
+                        <hr>
+                        <div class=" card-body">
+                            <div style="margin-bottom: 1%;">
+                                <button class=" btn btn-fab" [ngClass]="tabName == 'NATIONALITY' ? 'active':'tabColor'"
+                                    style="margin-right: 4px;" type="submit"
+                                    (click)="tabName = 'NATIONALITY';clearSearch()">NATIONALITY</button>
+                                <button class=" btn btn-fab" [ngClass]="tabName == 'RESIDENTS' ? 'active':'tabColor'"
+                                    style="margin-right: 4px;" type="submit"
+                                    (click)="tabName = 'RESIDENTS';clearSearch()">RESIDENTS</button>
+                                <button class=" btn btn-fab" [ngClass]="tabName == 'SCREEING' ? 'active':'tabColor'"
+                                    style="margin-right: 4px;" type="submit"
+                                    (click)="tabName = 'SCREEING';clearSearch()">SCREEING</button>
+                            </div>
+                        </div>
+
+                        <!---------------------NATIONALITY VIEW----------->
+                        <div class="row" *ngIf="buttonName != 'View' && preview == false">
+                            <div class=" col-md-3 " style="text-align: end;margin-top: 4px;"
+                                *ngIf="tabName != 'SCREEING'">
+                                <h4 class=" text-muted schcou">
+                                    Search by Country
+                                </h4>
+                            </div>
+
+                            <div class="col-md-3" *ngIf="tabName != 'SCREEING'">
+
+                                <div>
+                                    <input type="text" class="form-control dropdown-toggle" [(ngModel)]="searchKey"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+                                        (click)="showOptions=true" (keyup)="search$.next($event.target.value)" />
+
+
+                                    <div class="dropdown-menu" [ngClass]="showOptions==true ? 'show':''"
+                                        *ngIf="countryArr.length != 0">
+                                        <p class="cross"><i (click)="showOptions=false" class="fa fa-times pointer"
+                                                aria-expanded="true"></i></p>
+                                        <a class="dropdown-item" href="javascript:void(0)"
+                                            *ngFor="let item of countryArr"
+                                            (click)="showOptions=false;searchKey = item;currentPage = 1;getNationalityRiskList()">{{item}}</a>
+                                    </div>
+                                    <div class="dropdown-menu show"
+                                        *ngIf="searchKey.length > 0 && countryArr.length == 0">
+                                        <a class="dropdown-item" href="javascript:void(0)">No record found!</a>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class=" col-md-2" *ngIf="tabName != 'SCREEING'">
+                                <button type="button" rel="tooltip" class="btn btn-warning btn-sm btn-icon refic"
+                                    (click)="clearSearch()">
+                                    <i class="tim-icons icon-refresh-02"></i>
+                                </button>
+                            </div>
+                            <div class=" col-md-3">
+                                <input class="form-control" type="file" id="fileUploader" name="fileUploader"
+                                    (change)="fileChangeListener($event)" />
+                            </div>
+                            <button type="button" rel="tooltip" class="btn btn-warning btn-sm btn-icon bldow"
+                                [disabled]="permissionObj?.isDownload == false" title="Download"
+                                (click)="ExportToCsv()">
+                                <i class="fa fa-download " aria-hidden="true"></i>
+                            </button>
+                        </div>
+
+                        <div class="row" *ngIf="preview == true">
+                            <div class=" col-md-4 text-center " style="text-align: end;margin-top: 4px;">
+                                <h4 class=" text-muted">
+                                    Total Records: {{csvRecords.length}}
+                                </h4>
+                            </div>
+                            <div class=" col-md-4 text-center " style="text-align: end;margin-top: 4px;">
+                                <h4 class=" text-muted">
+                                    Preview
+                                </h4>
+                            </div>
+                            <div class=" col-md-4 text-center " style="text-align: end;margin-top: 4px;">
+                                <button type="button" class="btn btn-danger" id="myfile"
+                                    (click)="confirmUpload()">Confirm & Upload</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class=" table-responsive" style="text-align: center;">
+                                <table class=" table tablesorter" id="">
+                                    <thead class=" text-primary">
+                                        <tr>
+                                            <th *ngIf="tabName == 'NATIONALITY'">Country of Nationality</th>
+                                            <th *ngIf="tabName == 'RESIDENTS'">Country of Residency</th>
+                                            <th *ngIf="tabName == 'SCREEING'">Authorized Signers</th>
+                                            <th>Risk Type</th>
+                                            <th>Risk Score</th>
+                                            <th *ngIf="csvRecords.length == 0 && nationalityList.length > 0">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="preview == false">
+                                        <tr
+                                            *ngFor="let data of nationalityList | paginate: { itemsPerPage: itemPerPage,totalItems:totalItems, currentPage: currentPage};let i=index">
+                                            <td *ngIf="tabName == 'NATIONALITY'">{{data?.countryOfNationality}}</td>
+                                            <td *ngIf="tabName == 'RESIDENTS'">{{data?.countryOfResidency}}</td>
+                                            <td *ngIf="tabName == 'SCREEING'">{{data?.authorizedSigners}}</td>
+
+                                            <td>
+                                                <input class=" form-control" type="text" [value]="data?.risk"
+                                                    [disabled]="data.disable" [id]="i+'type-preview'"
+                                                    (keypress)="server.ValidateAlpha($event);" />
+                                            </td>
+                                            <td>
+                                                <input class=" form-control" type="text" [value]="data?.score"
+                                                    [disabled]="data.disable" [id]="i+'score-preview'"
+                                                    (keypress)="server.numberOnly($event)" />
+                                            </td>
+                                            <td *ngIf="csvRecords.length == 0 && nationalityList.length > 0">
+
+                                                <button class="btn btn btn-success btn-sm btn-icon" title="Edit"
+                                                    [disabled]="permissionObj?.isUpdate == false"
+                                                    (click)="onEditAction(i)" *ngIf="selectedIndex != i"><i
+                                                        class="far fa-edit"></i></button>&nbsp;&nbsp;
+                                                <button class="btn btn btn-success btn-sm btn-icon" title="Save"
+                                                    [disabled]="permissionObj?.isCreate == false"
+                                                    (click)="onSaveAction(i,data)" *ngIf="selectedIndex == i"><i
+                                                        class="fas fa-save"></i></button>&nbsp;&nbsp;
+                                                <button class="btn  btn-danger btn-sm btn-icon"
+                                                    [disabled]="permissionObj?.isDelete == false" title="Remove"
+                                                    (click)="onRemoveAction(i,data)" *ngIf="selectedIndex == i"><i
+                                                        class='fa fa-times'></i></button>
+
+                                                <!-- <span class="my-clr pointer blue" title="Edit" [disabled]="permissionObj?.isUpdate == false" (click)="onEditAction(i)" *ngIf="selectedIndex != i"><i class="far fa-edit"></i></span>
+                                                    <span class="my-clr pointer blue" title="Save" [disabled]="permissionObj?.isCreate == false"  (click)="onSaveAction(i,data)" *ngIf="selectedIndex == i"><i class="fas fa-save"></i></span>&nbsp;
+                                                    <span class="my-clr pointer red" title="Remove"  (click)="onRemoveAction(i,data)" *ngIf="selectedIndex == i"><i class="fas fa-times"></i></span> -->
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                    <tbody *ngIf="preview == true">
+                                        <tr *ngFor="let data of csvRecords;let i = index">
+                                            <td *ngIf="tabName == 'NATIONALITY'">{{data?.countryOfNationality}}</td>
+                                            <td *ngIf="tabName == 'RESIDENTS'">{{data?.countryOfResidency}}</td>
+                                            <td *ngIf="tabName == 'SCREEING'">{{data?.authorizedSigners}}</td>
+                                            <td>
+                                                <input class=" form-control" type="text" value={{data?.risk}}
+                                                    [id]="i+'type-preview'"
+                                                    (keypress)="server.ValidateAlpha($event);" />
+                                            </td>
+                                            <td>
+                                                <input class=" form-control" type="text" value={{data?.score}}
+                                                    [id]="i+'score-preview'" (keypress)="server.numberOnly($event)" />
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+
+
+
+
+
+
+                            </div>
+                            <div class="custom-pagination mt-2" style="text-align: right;"
+                                *ngIf="preview == false && nationalityList.length != 0">
+                                <pagination-controls (pageChange)="pagination($event)"></pagination-controls>
+                            </div>
+
+                        </div>
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

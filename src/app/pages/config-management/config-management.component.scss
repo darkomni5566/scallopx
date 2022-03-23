@@ -1,0 +1,17 @@
+.cell {
+    max-width: 50px;
+    text-align: justify;
+}
+
+.dropdown-menu {
+    max-height: 190px;
+    overflow-y: scroll;
+}
+.blue {
+    color: blue;
+}
+@media (min-width: 320px) and (max-width: 570px) {
+    .cfgna {
+        font-size: 14px;
+    }
+}

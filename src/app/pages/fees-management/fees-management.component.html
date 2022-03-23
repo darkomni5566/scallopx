@@ -1,0 +1,134 @@
+<div class="wrapper">
+    <div class="main-panel">
+        <div class=" content">
+            <div class=" row">
+                <div class=" col-md-12">
+                    <div class=" card">
+                        <div class=" card-header" style="display: flex;">
+                            <i class=" tim-icons icon-money-coins mr-2" style="font-size: x-large"> </i>
+                            <h2 class="feemng">FEES MANAGEMENT</h2>
+                            <!-- <div style="padding-left: 50%;">
+
+                                <button class="btn btn-success" [disabled]="permissionObj?.isCreate == false"
+                                    title="Add"  (click)="createFees()">CREATE FEES
+                                    +</button>
+                            </div> -->
+                        </div>
+                        <hr>
+                        <!-- <div class="row" *ngIf="buttonName != 'View'">
+                            <div class=" col-md-2 " style="text-align: end;margin-top: 4px;">
+                                <h4 class=" text-muted">
+                                    Search
+                                </h4>
+                            </div>
+                            <div class=" col-md-6 ">
+                                <div class=" form-group" style="display: flex;">
+                                    <input class=" form-control" placeholder="eg. About Us " type="text" />
+                                </div>
+                            </div>
+                            <div class=" col-md-4 ">
+                                <button type="button" rel="tooltip" class="btn btn-info btn-sm btn-icon">
+                                    <i class="tim-icons icon-zoom-split"></i>
+                                </button>&nbsp;&nbsp;
+                                <button type="button" rel="tooltip" class="btn btn-warning btn-sm btn-icon">
+                                    <i class="tim-icons icon-refresh-02"></i>
+                                </button>
+                            </div>
+                        </div> -->
+                        <div class=" card-body">
+                            <div class=" table-responsive" style="text-align: center;">
+                                <table class=" table tablesorter" id="">
+                                    <thead class=" text-primary">
+                                        <tr>
+                                            <th>Fee</th>
+                                            <th>coin</th>
+                                            <th>network Fee</th>
+                                            <th>fee For</th>
+                                            <th>user Type</th>
+                                            <th>created Time</th>
+                                            <th>updated Time</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            *ngFor="let data of feesArrList | paginate: { itemsPerPage: itemPerPage,totalItems:totalItems, currentPage: currentPage};let i=index">
+                                            <td class="width-td">
+                                                <input class=" form-control text-center " type="text"
+                                                    [value]="data?.fee" [disabled]="data.disable" [id]="i+'fee-preview'"
+                                                    (keypress)="server.numberOnly($event)" />
+                                            </td>
+                                            <td>{{data?.coin || '---'}}</td>
+                                            <!-- <td class="width-td">
+                                                <input class=" form-control text-center" type="text"
+                                                    [value]="data?.networkFee" [disabled]="data.disable"
+                                                    [id]="i+'networkFee-preview'"
+                                                    (keypress)="server.numberOnly($event)" />
+                                            </td> -->
+                                            <td>{{data?.networkFee || '---'}}</td>
+                                            <td class="width-td" [id]="i+'feeFor-preview'">
+                                                {{data?.feeFor || '---'}}
+                                                <!-- <input class=" form-control text-center" type="text"
+                                                    [value]="data?.feeFor" [disabled]="data.disable"
+                                                    [id]="i+'feeFor-preview'"
+                                                    (keypress)="server.ValidateAlpha($event)" /> -->
+
+                                                <!-- <select class=" form-control form-select-lg"
+                                                    aria-label="form-control example" [value]="data?.feeFor"
+                                                   [disabled]="data.disable"
+                                                    [id]="i+'feeFor-preview'">
+                                                    <option value="BASIC">BASIC</option>
+                                                    <option value="ELITE">ELITE</option>
+                                                </select> -->
+                                            </td>
+                                            <td class="width-td" [id]="i+'userType-preview'">
+                                                {{data?.userType || '---'}}
+                                                <!-- <input class=" form-control text-center" type="text"
+                                                    [value]="data?.userType" [disabled]="data.disable"
+                                                    [id]="i+'userType-preview'"
+                                                    (keypress)="server.ValidateAlpha($event)" /> -->
+                                                <!-- <select class=" form-control form-select-lg "
+                                                    aria-label="form-control example" [value]="data?.userType"
+                                                   [disabled]="data.disable"
+                                                    [id]="i+'userType-preview'">
+                                                    <option value="INDIVIDUAL">INDIVIDUAL</option>
+                                                    <option value="COMPANY">COMPANY</option>
+                                                </select> -->
+                                            </td>
+                                            <td>{{data?.createdTime | date:'mediumDate'}}</td>
+                                            <td>{{data?.updatedTime | date:'mediumDate'}}</td>
+                                            <td>
+                                                <button class="btn btn btn-success btn-sm btn-icon" title="Edit"
+                                                    [disabled]="permissionObj?.isUpdate == false"
+                                                    (click)="onEditAction(i);buttonName='UPDATE'"
+                                                    *ngIf="selectedIndex != i && data?.feeId"><i
+                                                        class="far fa-edit"></i></button>&nbsp;&nbsp;
+                                                <button class="btn btn btn-success btn-sm btn-icon" title="Save"
+                                                    [disabled]="permissionObj?.isCreate == false"
+                                                    (click)="buttonName == 'UPDATE'? updateAction(i,data) : onSaveAction(i)"
+                                                    *ngIf="selectedIndex == i || !data?.feeId"><i
+                                                        class="fas fa-save"></i></button>&nbsp;&nbsp;
+                                                <button class="btn  btn-danger btn-sm btn-icon"
+                                                    [disabled]="permissionObj?.isDelete == false" title="Remove"
+                                                    (click)="onRemoveAction(i,data)"
+                                                    *ngIf="selectedIndex == i && data?.feeId"><i
+                                                        class='fa fa-times'></i></button>
+                                                <button class="btn  btn-danger btn-sm btn-icon" title="Remove"
+                                                    (click)="onDeleteAction(i)" *ngIf="!data?.feeId"><i
+                                                        class='fa fa-trash'></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- <div class="custom-pagination mt-2" style="text-align: right;">
+                                <pagination-controls (pageChange)="pagination($event)"></pagination-controls>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

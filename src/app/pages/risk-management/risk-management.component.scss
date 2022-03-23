@@ -1,0 +1,130 @@
+.active {
+    background: #ff8d72;
+    background-image: linear-gradient(to bottom left, #ff8d72, #ff6491, #ff8d72);
+    background-size: 210% 210%;
+    background-position: top right;
+    background-color: #344675;
+    transition: all 0.15s ease;
+    box-shadow: none;
+    color: #ffffff;
+    padding: 10px 110px !important;
+}
+.tabColor {
+    background: #1d8cf8 !important;
+    background-image: linear-gradient(to bottom left, #2483e2, #2749d8, #619dd6) !important;
+    background-size: 210% 210%;
+    background-position: top right;
+    background-color: #1d8cf8;
+    transition: all 0.15s ease;
+    box-shadow: none;
+    color: #ffffff;
+    padding: 10px 135px;
+}
+.dropdown-menu {
+    max-height: 190px;
+    overflow-y: scroll;
+}
+.blue {
+    color: blue;
+}
+.red {
+    color: red;
+}
+
+.cross {
+    text-align: right;
+    color: #cecbcb;
+    margin-right: 10px;
+}
+@media (min-width: 320px) and (max-width: 375px) {
+    .active {
+        background-size: 210% 210%;
+        padding: 10px 71px !important;
+    }
+    .tabColor {
+        background-size: 210% 210%;
+        padding: 10px 80px;
+    }
+    .schcou {
+        text-align: center;
+    }
+    .rism {
+        font-size: 20px;
+    }
+    .refic {
+        padding: 0px 138px;
+    }
+    .bldow {
+        margin-left: 5%;
+        padding: 0px 138px;
+    }
+}
+@media (min-width: 375px) and (max-width: 425px) {
+    .tabColor {
+        background-size: 210% 210%;
+        padding: 10px 110px;
+    }
+    .active {
+        background-size: 210% 210%;
+        padding: 10px 100px !important;
+    }
+    .rism {
+        font-size: 28px;
+    }
+}
+@media (min-width: 360px) and (max-width: 640px) {
+    .active {
+        background-size: 210% 210%;
+        padding: 10px 100px !important;
+    }
+    .tabColor {
+        background-size: 210% 210%;
+        padding: 10px 110px;
+    }
+    .refic {
+        padding: 0px 156px;
+    }
+    .bldow {
+        margin-left: 5%;
+        padding: 0px 156px;
+    }
+}
+
+@media (min-width: 411px) and (max-width: 731px) {
+    .active {
+        background-size: 210% 210%;
+        padding: 10px 120px !important;
+    }
+    .tabColor {
+        background-size: 210% 210%;
+        padding: 10px 130px;
+    }
+    .schcou {
+        text-align: center;
+    }
+    .refic {
+        padding: 0px 181px;
+    }
+    .bldow {
+        margin-left: 5%;
+        padding: 0px 181px;
+    }
+}
+@media (min-width: 375px) and (max-width: 667px) {
+    .refic {
+        padding: 0px 165px;
+    }
+    .bldow {
+        margin-left: 5%;
+        padding: 0px 165px;
+    }
+}
+@media (min-width: 414px) and (max-width: 736px) {
+    .refic {
+        padding: 0px 183px;
+    }
+    .bldow {
+        margin-left: 5%;
+        padding: 0px 183px;
+    }
+}

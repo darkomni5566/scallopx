@@ -1,0 +1,290 @@
+/* You can add global styles to this file, and also import other style files */
+
+// @import '../node_modules/dragula/dist/dragula.css';
+.error {
+    color: #ec5d5d;
+}
+
+.mainClass {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h3.title {
+    text-align: center;
+}
+
+.forgot-div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.form-check input[type=checkbox],
+.radio input[type=radio] {
+    opacity: 100% !important;
+    visibility: inherit !important;
+}
+
+.form-check-input {
+    margin-left: 0 !important;
+}
+
+.routerSign {
+    text-align: center;
+}
+
+.has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    // line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link {
+    color: #f7f8f9;
+    background-color: #4590c6;
+    border-color: #111010 #090808 #060607;
+}
+
+.main-panel .contentLogin {
+    min-height: calc(100vh - 70px) !important;
+}
+
+textarea.form-control {
+    border: 1px solid #535e7f !important;
+}
+
+.form-control {
+    border-color: #535e7f !important;
+}
+
+.my-img {
+    object-fit: cover;
+    width: 200px;
+    height: 200px;
+}
+
+.pad-10 {
+    padding: 10px !important;
+}
+
+.ml-10 {
+    margin-left: 10px
+}
+
+.mb-10 {
+    margin-bottom: 10px
+}
+
+.mr-10 {
+    margin-right: 10px
+}
+
+.pointer {
+    cursor: pointer
+}
+
+.not-allow-btn {
+    cursor: not-allowed !important;
+}
+
+.searchCuration.form-control {
+    min-height: 150px;
+    display: flex;
+    overflow-x: scroll;
+    max-height: 150px;
+}
+
+select option {
+    color: #c13939;
+}
+
+.option-curation {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.section-width {
+    width: fit-content;
+}
+
+button.btn.btn-success.modalSpace {
+    margin-right: 4px;
+}
+
+// .sidebar-wrapper {
+//     background: #7e32c7;
+// }
+
+.active {
+    
+}
+
+// .logo {
+//     background: #7e32c7;
+// }
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 25px;
+  }
+  
+  .switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 5px;
+    bottom: 5px;
+    top:2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #2196F3;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+  .sidebar {
+//     background: linear-gradient( 
+// 0deg
+//  , #2e3b73 0%, #1d8cf8 100%) !important;
+
+ background:linear-gradient(270deg, rgb(0, 222, 202) 0%, rgb(99, 84, 255) 100%) !important;
+
+}
+
+.pointer {
+    cursor:pointer
+}
+#chartdiv {
+    width: 100%;
+    height: 340px;
+  }
+  #chartdiv1{
+    width: 100%;
+    height: 340px;
+  }
+  .user-alignment{
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .total-user-alignment{
+    font-weight: 600;
+  }
+  .f-right{
+    float: right;
+  }
+
+  .btn-warning {
+    background: #5686ce !important;
+    background-image: linear-gradient(to bottom left, #72aaff, #16bac1, #31a0c1) !important;
+    background-size: 210% 210%;
+    background-position: top right;
+    background-color: #6998cae0 !important;
+    transition: all 0.15s ease;
+    box-shadow: none;
+    color: #ffffff;
+   
+  }
+
+  .btn-info {
+    background: #1d8cf8 !important;
+    background-image: linear-gradient(to bottom left, #2483e2, #2749d8, #619dd6) !important;
+    background-size: 210% 210%;
+    background-position: top right;
+    background-color: #1d8cf8;
+    transition: all 0.15s ease;
+    box-shadow: none;
+    color: #ffffff;
+}
+
+.textCoin{
+  text-align: end;
+}
+.textCoinName{
+ text-align: initial; 
+}
+
+.redRole{
+  color: red !important;
+}
+
+.error {
+  color: red !important;
+}
+.unselectable{
+  background-color:#ededed;
+  cursor: not-allowed;
+}
+.addNetwork{
+    color: green;
+    padding-left: 184px;
+}
+
+@media (min-width: 320px) and (max-width: 570px) {
+
+  .bckb {
+      margin: 43px 0px 6px -146px !important;
+  }
+  .editBack{
+      margin: 10px 31px -36px -140px !important;
+  }
+  .cretr {
+    margin: 43px 0px 6px -315px !important;
+}
+.schitm {
+    text-align: initial !important;
+}
+}
+
+

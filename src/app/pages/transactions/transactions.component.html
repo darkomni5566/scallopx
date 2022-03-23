@@ -1,0 +1,439 @@
+<div class="wrapper">
+    <div class="main-panel">
+        <div class=" content">
+            <div class=" row">
+                <div class=" col-md-12">
+                    <div class=" card">
+                        <div class=" card-header" style="display: flex;">
+                            <i class=" tim-icons icon-single-02 mr-2" style="font-size: x-large"> </i>
+                            <h2>TRANSACTION MANAGEMENT</h2>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class=" col-md-1" style="text-align: end;margin-top: 4px;">
+                                <h4 class=" text-muted fmbk">
+                                    From
+                                </h4>
+                            </div>
+                            <div class=" col-md-3">
+                                <div class=" form-group" style="display: flex;">
+                                    <input class=" form-control pointer" type="date" [(ngModel)]="fromDate"
+                                        (change)="onFromSelect()" [max]="maxFromDate" />
+                                </div>
+                            </div>
+                            <div style="text-align: end;margin-top: 4px;">
+                                <h4 class=" text-muted tbk">
+                                    To
+                                </h4>
+                            </div>
+                            <div class=" col-md-3">
+                                <div class=" form-group" style="display: flex;">
+                                    <input class=" form-control pointer" type="date" [(ngModel)]="toDate"
+                                        (change)="onToSelect()" [min]="maxToDate" />
+                                </div>
+                            </div>
+                            <div class=" col-md-4 ">
+                                <button type="button" rel="tooltip" class="btn btn-info btn-sm btn-icon"
+                                    (click)="currentPage = 1;gettransactionList()">
+                                    <i class="tim-icons icon-zoom-split"></i>
+                                </button>&nbsp;&nbsp;
+                                <button type="button" rel="tooltip" class="btn btn-success btn-sm btn-icon"
+                                    (click)="clearSearch()">
+                                    <i class="tim-icons icon-refresh-02"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-----------------------transaction view-------------->
+                        <div class=" card-body" *ngIf="transactionView">
+                            <div class=" table-responsive" style="text-align: center;">
+                              <table class=" table tablesorter">
+          
+                                <tbody>
+                                  <tr class="pointer rowColor-change" (click)="viewTransaction(item)"
+                                  *ngFor="let item of transactionList | paginate: { itemsPerPage: itemPerPage,totalItems:totalItems, currentPage: currentPage};">
+                                    <td>
+                                      <span class="btn btn-icon btn-soft-secondary rounded-circle"><span class="btn-icon__inner">Tx</span></span>
+                                    </td>
+                                    <td><label><b>{{(item?.transactionId?.length>20)?(item?.transactionId|
+                                          slice:0:20)+'...':(item?.transactionId) ||'---' }}</b></label>
+                                      <p>{{item?.creationTime | date : "medium"}}</p>
+                                    </td>
+          
+                                    <td>
+                                      From &nbsp;<label><b>{{(item?.fromUserAddress?.length>20)?(item?.fromUserAddress |
+                                          slice:0:20)+'...':(item?.fromUserAddress) ||'---' }}</b></label><br>
+                                      To &nbsp;<label><b>{{(item?.toUserAddress?.length>20)?(item?.toUserAddress|
+                                          slice:0:20)+'...':(item?.toUserAddress) ||'---' }}</b></label><br>
+                                    </td>
+                                    <td><label>
+                                      <span>
+                                        <i class="fas fa-times-circle pointer" [title]="item?.orderStatus"
+                                          *ngIf="item?.orderStatus == 'CANCELLED'"
+                                          [ngClass]="{'red':item?.orderStatus == 'CANCELLED'}">{{item?.orderStatus}}</i>
+                                        <i class="far fa-check-circle pointer"
+                                          *ngIf="item?.orderStatus == 'COMPLETED'"
+                                          [title]="item?.orderStatus"
+                                          [ngClass]="{'green':item?.orderStatus == 'COMPLETED'}">{{item?.orderStatus}}</i>
+          
+                                        <i class="fa fa-circle pointer" aria-hidden="true"
+                                          [title]="item?.orderStatus"
+                                          *ngIf="item?.orderStatus == 'PLACED' || item?.orderStatus == null"
+                                          [ngClass]="{'darkOrange': item?.orderStatus == 'PLACED','orange':item?.orderStatus == null}">{{item?.orderStatus}}</i>
+          
+                                        <i class="fa fa-circle pointer" aria-hidden="true"
+                                          [title]="item?.orderStatus"
+                                          *ngIf="item?.orderStatus == 'PENDING'"
+                                          [ngClass]="{'darkOrange':item?.orderStatus == 'PENDING'}">{{item?.orderStatus}}</i>
+                                      </span>
+          
+                                    </label></td>
+                                    <td>
+                                      <label class="trans-border"><b>{{item?.quantity}} {{item?.symbol.split('/')[0]}}</b></label>
+                                    </td>
+          
+                                  </tr>
+                                  <tr *ngIf="transactionList.length == 0">
+                                    <td class="table-no-record" colspan="9">No Record Found</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div class="custom-pagination mt-2" *ngIf="transactionList.length != 0"
+                                style="text-align: right;">
+                                <pagination-controls (pageChange)="pagination($event)"></pagination-controls>
+                            </div>
+                          </div>
+
+                           <!---------------------transaction view------------->
+                        <div class="table-responsive" *ngIf="!transactionView">
+                    <div class="container">
+                      <a class="btn btn-fab mr-3 col-md-1" (click)="transactionBack()" role="button" data-slide="prev">
+                        <i class="fa fa-arrow-left white"></i>
+                      </a>
+                      <div class="main-body-user">
+                        <div class="row gutters-sm">
+                          
+                          <div class="col-md-12 ">
+                            <div class="card-user mb-3">
+                              <div class="card-body-userInfo ml-3">
+                                <div>
+                                  <h6 class="d-flex align-items-center mb-3">
+                                    <i class="material-icons text-info mr-2">ACCOUNT
+                                      INFO</i>
+                                  </h6>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">wallet Name</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.walletName}}
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">Order Type
+                                      </h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.orderType}}
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">Wallet Type</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.walletType}}
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">Status</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      <label>
+                                        <span>
+                                          <i class="fas fa-times-circle pointer" [title]="viewTransactionObj?.orderStatus"
+                                            *ngIf="viewTransactionObj?.orderStatus == 'CANCELLED'"
+                                            [ngClass]="{'red':viewTransactionObj?.orderStatus == 'CANCELLED'}">{{viewTransactionObj?.orderStatus}}</i>
+                                          <i class="far fa-check-circle pointer"
+                                            *ngIf="viewTransactionObj?.orderStatus == 'COMPLETED'"
+                                            [title]="viewTransactionObj?.orderStatus"
+                                            [ngClass]="{'green':viewTransactionObj?.orderStatus == 'COMPLETED'}">{{viewTransactionObj?.orderStatus}}</i>
+  
+                                          <i class="fa fa-circle pointer" aria-hidden="true"
+                                            [title]="viewTransactionObj?.orderStatus"
+                                            *ngIf="viewTransactionObj?.orderStatus == 'PLACED' || viewTransactionObj?.orderStatus == null"
+                                            [ngClass]="{'darkOrange': viewTransactionObj?.orderStatus == 'PLACED','orange':viewTransactionObj?.orderStatus == null}">{{viewTransactionObj?.orderStatus}}</i>
+  
+                                          <i class="fa fa-circle pointer" aria-hidden="true"
+                                            [title]="viewTransactionObj?.orderStatus"
+                                            *ngIf="viewTransactionObj?.orderStatus == 'PENDING'"
+                                            [ngClass]="{'darkOrange':viewTransactionObj?.orderStatus == 'PENDING'}">{{viewTransactionObj?.orderStatus}}</i>
+                                        </span>
+  
+                                      </label>
+  
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">Value</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7">
+                                      <label class="pointer"
+                                        [ngClass]="viewTransactionObj?.orderSide == 'buy' ? 'green':'red'">
+                                        <span *ngIf="viewTransactionObj?.orderSide == 'buy'" [title]="viewTransactionObj?.orderSide">+</span>
+                                        <span *ngIf="viewTransactionObj?.orderSide == 'sell'" [title]="viewTransactionObj?.orderSide">-</span>
+                                        {{viewTransactionObj?.quantity}} {{viewTransactionObj?.symbol.split('/')[0]}}
+                                      </label>
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">price</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 " [title]="viewTransactionObj?.price">
+                                      {{userDetailsObj?.primeryCurrency.symbol}}{{viewTransactionObj?.price}}
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">Total Amount</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.totalPaid}}
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">Avg Execution Price</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.avgExecutionPrice}}
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">Fees</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.fees }}
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">GasFee</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.gasFee }}
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">Network Fee</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.networkFee }}
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">From User Wallet LedgerId</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.fromUserWalletLedgerId }}
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">To User Wallet LedgerId</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.toUserWalletLedgerId }}
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">Exec Network</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.execNetwork }}
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">Base Network</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.baseNetwork }}
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">Exec Price</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.execPrice }}
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">Exec Coin</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.exeCoin }}
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">Current Quantity</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.currentQuantity }}
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">Transaction Fee</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.transactionFee}}
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">Markup</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.markup}}
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">Client OrderId</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.clientOrderId}}
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">Order Id</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.orderId}}
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">To</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.toAddress}}&nbsp;<i  *ngIf="viewTransactionObj?.toAddress" class="fas fa-copy pointer"
+                                      rel="tooltip" title="copy"
+                                      (click)="server.copy(viewTransactionObj?.fromAddress)"></i>
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">From</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.fromAddress }}&nbsp;<i  *ngIf="viewTransactionObj?.fromAddress" class="fas fa-copy pointer"
+                                        rel="tooltip" title="copy"
+                                        (click)="server.copy(viewTransactionObj?.fromAddress)"></i>
+                                    </div>
+                                  </div>
+                                  
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">Transaction Id</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.transactionId}}&nbsp;<i *ngIf="viewTransactionObj?.transactionId" class="fas fa-copy pointer"
+                                        rel="tooltip" title="copy"
+                                        (click)="server.copy(viewTransactionObj?.transactionId)"></i>
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">To UserId</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.toUserId}}&nbsp;<i *ngIf="viewTransactionObj?.toUserId" class="fas fa-copy pointer"
+                                        rel="tooltip" title="copy"
+                                        (click)="server.copy(viewTransactionObj?.toUserId)"></i>
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">From UserId</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.fromUserId}}&nbsp;<i *ngIf="viewTransactionObj?.fromUserId" class="fas fa-copy pointer"
+                                        rel="tooltip" title="copy"
+                                        (click)="server.copy(viewTransactionObj?.fromUserId)"></i>
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">Recon Id</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.reconId}}&nbsp;<i *ngIf="viewTransactionObj?.reconId" class="fas fa-copy pointer"
+                                        rel="tooltip" title="copy"
+                                        (click)="server.copy(viewTransactionObj?.reconId)"></i>
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                      <h6 class="mb-0">Last Execution Time</h6>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7 ">
+                                      {{viewTransactionObj?.lastExecutionTime | date : "medium" }}
+                                    </div>
+                                  </div>
+  
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
